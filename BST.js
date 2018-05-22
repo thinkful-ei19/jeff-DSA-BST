@@ -108,6 +108,12 @@ class BinarySearchTree {
     }
     return this.left._findMin();
   }
+  _findMax() {
+    if (!this.right) {
+      return this;
+    }
+    return this.right._findMax();
+  }
 
   remove(key) {
     if (this.key == key) {
@@ -174,7 +180,37 @@ if(tree.key<tree.right.key && tree.key>tree.left.key){
 else{
   return false
 }
+}
+let temp = new BinarySearchTree();
+function thirdLargestNode(tree) {
+  if (tree) {
+    thirdLargestNode(tree.left);
+    
+    temp.insert(tree.key);
+    thirdLargestNode(tree.right);
+  }
+  
+  let curr = temp;
 
+  while (curr.right) {
+    curr = curr.right;
+  }
+
+  if (curr.parent && curr.parent.parent) {
+    return curr.parent.parent.key;
+  }
+}
+function balancedBST(BST) {
+
+
+  let leftHeight = height(BST.left);
+  let rightHeight = height(BST.right);
+  let absVal = (Math.abs(leftHeight - rightHeight));
+
+  if (absVal > 1) {
+    return false;
+  }
+  return true;
 }
 
 function main() {
@@ -189,6 +225,9 @@ function main() {
     BST.insert("5");
     BST.insert("7");
     // console.log(height(BST))
-    console.log(BST._findMin())
+    // console.log(BST._findMax().parent.key)
+    // console.log(BST)
+    console.log(balancedBST(BST))
+    console.log(thirdLargestNode(BST))
 }
 main()
